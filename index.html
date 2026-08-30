@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐸 Frog Quiz Psicoterapia Arcade</title>
+<title>🐸 Frog Quiz - Arcade Relajante</title>
 <style>
 * {
   margin: 0;
@@ -11,18 +11,29 @@
   box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap');
+
+:root {
+  --primary: #2ecc71;
+  --secondary: #3498db;
+  --accent: #e74c3c;
+  --dark: #1a1a2e;
+  --light: #ecf0f1;
+  --glow: 0 0 20px rgba(46, 204, 113, 0.6);
+}
 
 body {
-  font-family: "Press Start 2P", monospace;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-attachment: fixed;
+  color: var(--light);
   text-align: center;
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
 }
 
+/* Fondo animado con partículas */
 body::before {
   content: '';
   position: fixed;
@@ -30,36 +41,57 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%23fff" opacity="0.3"/><circle cx="80" cy="80" r="2" fill="%23fff" opacity="0.3"/></svg>');
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="1.5" fill="%23fff" opacity="0.3"/><circle cx="75" cy="75" r="1.5" fill="%23fff" opacity="0.3"/><circle cx="50" cy="30" r="1" fill="%23fff" opacity="0.2"/></svg>');
+  background-size: 50px 50px;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
+  animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(20px); }
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .quiz {
-  background: rgba(0, 0, 0, 0.7);
-  border: 4px solid #00ff00;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 0 30px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1);
-  animation: glow 2s ease-in-out infinite;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border: 3px solid var(--primary);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), var(--glow);
+  animation: slideIn 0.6s ease-out;
 }
 
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1); }
-  50% { box-shadow: 0 0 50px rgba(0, 255, 0, 0.8), inset 0 0 30px rgba(0, 255, 0, 0.3); }
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px #00ff00;
-  animation: pulse 1.5s ease-in-out infinite;
+  font-family: 'Orbitron', monospace;
+  font-size: 48px;
+  margin-bottom: 10px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
@@ -67,238 +99,400 @@ h1 {
   50% { transform: scale(1.05); }
 }
 
+.subtitle {
+  font-size: 14px;
+  color: rgba(236, 240, 241, 0.7);
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
 .setup {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 18px;
+  margin-bottom: 30px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .setup input,
-.setup select,
-.setup button {
-  padding: 12px;
+.setup select {
+  padding: 15px;
   font-size: 14px;
-  font-family: "Press Start 2P", monospace;
-  background: rgba(0, 255, 0, 0.1);
-  border: 2px solid #00ff00;
-  color: #00ff00;
+  font-family: 'Poppins', sans-serif;
+  background: rgba(46, 204, 113, 0.1);
+  border: 2px solid var(--primary);
+  color: var(--light);
   cursor: pointer;
   transition: all 0.3s;
+  border-radius: 10px;
 }
 
 .setup input::placeholder {
-  color: rgba(0, 255, 0, 0.5);
+  color: rgba(236, 240, 241, 0.4);
 }
 
 .setup input:focus,
 .setup select:focus {
   outline: none;
-  background: rgba(0, 255, 0, 0.3);
-  box-shadow: 0 0 15px #00ff00;
+  background: rgba(46, 204, 113, 0.25);
+  box-shadow: var(--glow);
+  transform: translateY(-2px);
 }
 
 .setup button {
-  background: linear-gradient(45deg, #00ff00, #00cc00);
-  color: #000;
+  padding: 16px;
+  font-size: 16px;
+  font-family: 'Orbitron', monospace;
   font-weight: bold;
-  border-radius: 8px;
-  transform: scale(1);
+  background: linear-gradient(45deg, var(--primary), #27ae60);
+  color: var(--dark);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
   transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 5px 20px rgba(46, 204, 113, 0.3);
 }
 
 .setup button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #00ff00;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(46, 204, 113, 0.6);
 }
 
 .setup button:active {
-  transform: scale(0.95);
+  transform: translateY(-1px);
 }
 
 #hud {
   display: none;
   justify-content: space-around;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .hud-item {
-  background: rgba(0, 255, 0, 0.1);
-  border: 2px solid #00ff00;
-  padding: 15px 25px;
-  border-radius: 8px;
-  font-size: 16px;
-  min-width: 150px;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(52, 152, 219, 0.15));
+  border: 2px solid var(--primary);
+  padding: 18px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  min-width: 160px;
+  box-shadow: inset 0 0 15px rgba(46, 204, 113, 0.1);
+  transition: all 0.3s;
+}
+
+.hud-item:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 0 15px rgba(46, 204, 113, 0.1), var(--glow);
 }
 
 .hud-item span {
-  color: #00ff00;
-  font-weight: bold;
+  color: var(--primary);
+  font-weight: 700;
   font-size: 20px;
-  text-shadow: 0 0 10px #00ff00;
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
 
 #question {
-  font-size: 18px;
-  margin: 30px 0;
-  min-height: 60px;
+  font-size: 22px;
+  margin: 40px 0;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 255, 0, 0.1);
-  border: 2px solid #00ff00;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.2);
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+  border: 2px solid rgba(46, 204, 113, 0.5);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 20px rgba(46, 204, 113, 0.15);
+  font-weight: 500;
+  line-height: 1.6;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .leaves {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin: 50px 0;
+  gap: 30px;
+  margin: 80px 0 60px 0;
   position: relative;
   flex-wrap: wrap;
+  min-height: 200px;
 }
 
 .leaf {
-  width: 140px;
-  height: 140px;
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  width: 160px;
+  height: 160px;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   border-radius: 50%;
-  border: 3px solid #00ff00;
-  transition: all 0.2s;
-  box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
-  font-size: 12px;
+  border: 3px solid var(--primary);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+  font-size: 14px;
   text-align: center;
-  padding: 10px;
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.leaf::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .leaf:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 25px rgba(46, 204, 113, 0.9);
-  background: linear-gradient(135deg, #27ae60, #1e8449);
+  transform: scale(1.12) translateY(-8px);
+  box-shadow: 0 20px 50px rgba(46, 204, 113, 0.8);
+}
+
+.leaf:hover::before {
+  opacity: 1;
 }
 
 .leaf:active {
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 #frog {
   position: absolute;
-  top: -100px;
+  top: -120px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 70px;
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.8));
+  font-size: 100px;
+  transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
   z-index: 10;
+  animation: frogIdle 3s ease-in-out infinite;
 }
 
-.game-over {
-  animation: bounce 0.6s ease-in-out;
+@keyframes frogIdle {
+  0%, 100% { transform: translateX(-50%) translateY(0px); }
+  50% { transform: translateX(-50%) translateY(-5px); }
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+.frog-jumping {
+  animation: frogJump 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.result {
-  margin-top: 30px;
-  padding: 20px;
-  background: rgba(0, 255, 0, 0.1);
-  border: 2px solid #00ff00;
-  border-radius: 8px;
-  font-size: 18px;
-}
-
-.result h2 {
-  font-size: 24px;
-  margin-bottom: 15px;
-  text-shadow: 0 0 10px #00ff00;
-}
-
-.result p {
-  margin: 10px 0;
-  font-size: 16px;
-}
-
-.result button {
-  margin-top: 15px;
-  padding: 12px 25px;
-  background: linear-gradient(45deg, #00ff00, #00cc00);
-  color: #000;
-  border: 2px solid #00ff00;
-  font-family: "Press Start 2P", monospace;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.result button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #00ff00;
-}
-
-.ranking {
-  margin-top: 30px;
-  background: rgba(0, 255, 0, 0.1);
-  border: 2px solid #00ff00;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.ranking h3 {
-  font-size: 18px;
-  margin-bottom: 15px;
-  text-shadow: 0 0 10px #00ff00;
-}
-
-.ranking-item {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  margin: 8px 0;
-  border-left: 3px solid #00ff00;
-  text-align: left;
-  font-size: 12px;
-  border-radius: 4px;
+@keyframes frogJump {
+  0% { transform: translateX(-50%) scaleY(1); }
+  25% { transform: translateX(-50%) scaleY(0.8) translateY(-80px); }
+  50% { transform: translateX(-50%) scaleY(1.1) translateY(0px); }
+  100% { transform: translateX(-50%) scaleY(1); }
 }
 
 .progress-bar {
   width: 100%;
-  height: 20px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 2px solid #00ff00;
-  border-radius: 8px;
-  margin: 20px 0;
+  height: 25px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  margin: 30px 0;
   overflow: hidden;
+  display: none;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00ff00, #00cc00);
-  transition: width 0.3s;
-  box-shadow: 0 0 10px #00ff00;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 20px var(--primary);
+}
+
+.result {
+  margin-top: 40px;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(52, 152, 219, 0.15));
+  border: 2px solid var(--primary);
+  border-radius: 15px;
+  font-size: 18px;
+  animation: slideIn 0.6s ease-out;
+  box-shadow: inset 0 0 20px rgba(46, 204, 113, 0.1);
+}
+
+.result h2 {
+  font-size: 36px;
+  margin-bottom: 25px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.result p {
+  margin: 15px 0;
+  font-size: 16px;
+  color: rgba(236, 240, 241, 0.9);
+}
+
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.stat-card {
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid var(--primary);
+  padding: 15px;
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(46, 204, 113, 0.3);
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(236, 240, 241, 0.6);
+  margin-top: 5px;
+}
+
+.result button {
+  margin-top: 12px;
+  margin-right: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(45deg, var(--primary), #27ae60);
+  color: var(--dark);
+  border: none;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+}
+
+.result button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(46, 204, 113, 0.5);
+}
+
+.ranking {
+  margin-top: 40px;
+  background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(46, 204, 113, 0.15));
+  border: 2px solid var(--secondary);
+  padding: 30px;
+  border-radius: 15px;
+  animation: slideIn 0.8s ease-out;
+  box-shadow: inset 0 0 20px rgba(52, 152, 219, 0.1);
+}
+
+.ranking h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, var(--secondary), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ranking-item {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  margin: 10px 0;
+  border-left: 4px solid var(--primary);
+  text-align: left;
+  font-size: 13px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ranking-item:hover {
+  transform: translateX(10px);
+  background: rgba(46, 204, 113, 0.1);
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
+}
+
+.ranking-position {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 40px;
+}
+
+.ranking-score {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Efectos de partículas */
+.particle {
+  position: fixed;
+  pointer-events: none;
+  animation: particleFloat 2s ease-out forwards;
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) translateX(var(--tx));
+  }
 }
 
 @media (max-width: 768px) {
-  h1 { font-size: 20px; }
-  .leaf { width: 100px; height: 100px; font-size: 10px; }
-  #frog { font-size: 50px; }
-  .hud-item { font-size: 12px; min-width: 100px; }
+  h1 { font-size: 32px; }
+  .leaf { width: 120px; height: 120px; font-size: 12px; }
+  #frog { font-size: 70px; top: -80px; }
+  .quiz { padding: 25px; }
+  .leaves { gap: 15px; }
+  #hud { gap: 10px; }
+  .hud-item { min-width: 120px; padding: 12px 18px; font-size: 12px; }
 }
 </style>
 </head>
@@ -306,27 +500,35 @@ h1 {
 
 <div class="container">
   <div class="quiz">
-    <h1>🐸 FROG QUIZ ARCADE 🐸</h1>
+    <h1>🐸 FROG QUIZ</h1>
+    <p class="subtitle">Prueba tus conocimientos de psicoterapia de forma relajante</p>
     
     <div class="setup" id="setup">
-      <div style="font-size: 16px; margin-bottom: 10px;">⚙️ CONFIGURACIÓN DEL JUEGO</div>
-      <input id="playerName" placeholder="Ingresa tu nombre">
-      <select id="difficulty">
-        <option value="easy">⭐ FÁCIL (12s - 5 vidas)</option>
-        <option value="medium" selected>⭐⭐ MEDIO (8s - 3 vidas)</option>
-        <option value="hard">⭐⭐⭐ DIFÍCIL (5s - 2 vidas)</option>
-      </select>
+      <div class="form-group">
+        <label>👤 Tu nombre</label>
+        <input id="playerName" placeholder="Ingresa tu nombre..." type="text">
+      </div>
+      
+      <div class="form-group">
+        <label>⚙️ Dificultad</label>
+        <select id="difficulty">
+          <option value="easy">⭐ Fácil - 12 segundos, 5 vidas</option>
+          <option value="medium" selected>⭐⭐ Medio - 8 segundos, 3 vidas</option>
+          <option value="hard">⭐⭐⭐ Difícil - 5 segundos, 2 vidas</option>
+        </select>
+      </div>
+      
       <button onclick="startGame()">▶️ COMENZAR JUEGO</button>
     </div>
 
     <div id="hud">
-      <div class="hud-item">⏳ TIEMPO: <span id="time">10</span>s</div>
-      <div class="hud-item">⭐ PUNTOS: <span id="points">0</span></div>
-      <div class="hud-item">❤️ VIDAS: <span id="lives">3</span></div>
-      <div class="hud-item">📊 PREGUNTA: <span id="current">1</span>/<span id="total">7</span></div>
+      <div class="hud-item">⏳ <span id="time">10</span>s</div>
+      <div class="hud-item">⭐ <span id="points">0</span>pts</div>
+      <div class="hud-item">❤️ <span id="lives">3</span></div>
+      <div class="hud-item">📊 <span id="current">1</span>/<span id="total">7</span></div>
     </div>
 
-    <div class="progress-bar" id="progressBar" style="display:none;">
+    <div class="progress-bar" id="progressBar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
 
@@ -340,17 +542,28 @@ h1 {
   </div>
 </div>
 
-<!-- 🎵 Sonidos -->
-<audio id="bgmusic" loop volume="0.3">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_0d5a8f2c5b.mp3?filename=relaxing-music-ambient-11099.mp3" type="audio/mpeg">
+<!-- 🎵 SONIDOS Y MÚSICA -->
+<audio id="bgmusic" loop volume="0.4">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2805/2805-preview.mp3" type="audio/mpeg">
 </audio>
-<audio id="jump" volume="0.5"><source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" type="audio/ogg"></audio>
-<audio id="success" volume="0.5"><source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg"></audio>
-<audio id="fail" volume="0.5"><source src="https://actions.google.com/sounds/v1/cartoon/boing.ogg" type="audio/ogg"></audio>
-<audio id="gameover" volume="0.5"><source src="https://actions.google.com/sounds/v1/cartoon/concussive_drum_hit.ogg" type="audio/ogg"></audio>
+<audio id="musicAlt" loop volume="0.35">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2804/2804-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="jump" volume="0.6">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="success" volume="0.6">
+  <source src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="fail" volume="0.5">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="gameover" volume="0.6">
+  <source src="https://assets.mixkit.co/active_storage/sfx/1455/1455-preview.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-// 🎲 Pool expandido de preguntas sobre psicoterapia
+// 🎲 POOL DE PREGUNTAS - BASE DE DATOS EXPANDIDA
 const pool = [
   {q:"La psicoterapia ayuda solo en crisis graves", options:["Verdadero","Falso"], a:1},
   {q:"El terapeuta mantiene confidencialidad", options:["Verdadero","Falso"], a:0},
@@ -363,19 +576,25 @@ const pool = [
   {q:"La psicoterapia es solo hablar sin objetivos", options:["Verdadero","Falso"], a:1},
   {q:"La terapia puede reducir ansiedad", options:["Verdadero","Falso"], a:0},
   {q:"La empatía es fundamental en terapia", options:["Verdadero","Falso"], a:0},
-  {q:"El psicologo prescribe medicamentos", options:["Verdadero","Falso"], a:1},
+  {q:"El psicólogo prescribe medicamentos", options:["Verdadero","Falso"], a:1},
   {q:"La terapia familiar incluye a todos los miembros", options:["Verdadero","Falso"], a:0},
   {q:"La resistencia del paciente es mala señal", options:["Verdadero","Falso"], a:1},
-  {q:"La psicoterapia tiene base científica", options:["Verdadero","Falso"], a:0}
+  {q:"La psicoterapia tiene base científica", options:["Verdadero","Falso"], a:0},
+  {q:"El burnout es exclusivo de psicoterapeutas", options:["Verdadero","Falso"], a:1},
+  {q:"La transferencia ocurre en terapia", options:["Verdadero","Falso"], a:0},
+  {q:"La duración ideal es de 50 minutos", options:["Verdadero","Falso"], a:0},
+  {q:"La autocompasión mejora la salud mental", options:["Verdadero","Falso"], a:0},
+  {q:"La terapia online es menos efectiva", options:["Verdadero","Falso"], a:1},
 ];
 
 let quiz = [], current = 0, score = 0, lives = 3, log = [];
 let time = 10, timer, player = "";
 let gameActive = false;
 let rankings = JSON.parse(localStorage.getItem('frogquizRankings')) || [];
+let musicPlaying = false;
 
 function startGame() {
-  player = document.getElementById("playerName").value || "Anónimo";
+  player = document.getElementById("playerName").value || "Jugador Anónimo";
   let diff = document.getElementById("difficulty").value;
   
   if (diff === "easy") { time = 12; lives = 5; }
@@ -387,8 +606,10 @@ function startGame() {
   document.getElementById("progressBar").style.display = "block";
   document.getElementById("resultContainer").innerHTML = "";
   
-  // Reproducir música
-  document.getElementById("bgmusic").play().catch(e => console.log("Audio no disponible"));
+  // Reproducir música relajante
+  let music = Math.random() > 0.5 ? document.getElementById("bgmusic") : document.getElementById("musicAlt");
+  music.play().catch(e => console.log("Audio no disponible"));
+  musicPlaying = true;
   
   // Seleccionar preguntas aleatorias
   quiz = [...pool].sort(() => Math.random() - 0.5).slice(0, 7);
@@ -396,7 +617,6 @@ function startGame() {
   
   current = 0;
   score = 0;
-  lives = lives;
   log = [];
   gameActive = true;
   
@@ -461,15 +681,17 @@ function answer(i, leaf) {
   gameActive = false;
   
   let frog = document.getElementById("frog");
+  frog.classList.add("frog-jumping");
+  
   let rect = leaf.getBoundingClientRect();
   let parentRect = leaf.parentElement.getBoundingClientRect();
   let x = rect.left - parentRect.left + rect.width / 2;
   let y = rect.top - parentRect.top;
   
   frog.style.left = x + "px";
-  frog.style.top = (y - 70) + "px";
+  frog.style.top = (y - 90) + "px";
   
-  document.getElementById("jump").play().catch(e => console.log("Sonido no disponible"));
+  document.getElementById("jump").play().catch(e => {});
   
   const isCorrect = i === quiz[current].a;
   const userAnswer = quiz[current].options[i];
@@ -477,22 +699,45 @@ function answer(i, leaf) {
   
   log.push({ q: quiz[current].q, user: userAnswer, correct: correctAnswer, result: isCorrect });
   
+  // Crear partículas de efecto
+  createParticles(x, y, isCorrect);
+  
   if (isCorrect) {
     score += 10;
     leaf.style.background = "linear-gradient(135deg, #27ae60, #1e8449)";
-    leaf.style.boxShadow = "0 0 25px #00ff00";
-    document.getElementById("success").play().catch(e => console.log("Sonido no disponible"));
+    leaf.style.boxShadow = "0 0 40px rgba(46, 204, 113, 1)";
+    document.getElementById("success").play().catch(e => {});
   } else {
     loseLife(userAnswer);
     leaf.style.background = "linear-gradient(135deg, #e74c3c, #c0392b)";
-    leaf.style.boxShadow = "0 0 25px #ff0000";
-    document.getElementById("fail").play().catch(e => console.log("Sonido no disponible"));
+    leaf.style.boxShadow = "0 0 40px rgba(231, 76, 60, 1)";
+    document.getElementById("fail").play().catch(e => {});
   }
   
   document.getElementById("points").innerText = score;
   document.getElementById("lives").innerText = lives;
   
-  setTimeout(next, 800);
+  setTimeout(next, 900);
+}
+
+function createParticles(x, y, isCorrect) {
+  const particleCount = isCorrect ? 8 : 4;
+  const color = isCorrect ? '46, 204, 113' : '231, 76, 60';
+  
+  for (let i = 0; i < particleCount; i++) {
+    let particle = document.createElement("div");
+    particle.className = "particle";
+    particle.innerHTML = isCorrect ? "✓" : "✗";
+    particle.style.left = x + "px";
+    particle.style.top = y + "px";
+    particle.style.color = `rgb(${color})`;
+    particle.style.fontSize = "24px";
+    particle.style.fontWeight = "bold";
+    particle.style.--tx = (Math.random() - 0.5) * 200 + "px";
+    document.body.appendChild(particle);
+    
+    setTimeout(() => particle.remove(), 2000);
+  }
 }
 
 function loseLife(userAnswer) {
@@ -513,58 +758,96 @@ function next() {
 function finish() {
   gameActive = false;
   clearInterval(timer);
+  
+  // Detener música
   document.getElementById("bgmusic").pause();
-  document.getElementById("gameover").play().catch(e => console.log("Sonido no disponible"));
+  document.getElementById("musicAlt").pause();
+  
+  document.getElementById("gameover").play().catch(e => {});
   
   // Guardar en ranking
-  let rank = { player, score, lives, date: new Date().toLocaleDateString() };
+  let rank = { player, score, lives, date: new Date().toLocaleDateString('es-ES') };
   rankings.push(rank);
   rankings.sort((a, b) => b.score - a.score);
   rankings = rankings.slice(0, 10);
   localStorage.setItem('frogquizRankings', JSON.stringify(rankings));
   
   let accuracy = log.length > 0 ? Math.round((log.filter(l => l.result).length / log.length) * 100) : 0;
+  let correctCount = log.filter(l => l.result).length;
   
   let html = `
     <div class="result">
-      <h2>🏁 ¡JUEGO TERMINADO! 🏁</h2>
-      <p>👤 Jugador: <strong>${player}</strong></p>
-      <p>⭐ Puntos: <strong>${score}</strong></p>
-      <p>❤️ Vidas restantes: <strong>${lives}</strong></p>
-      <p>🎯 Precisión: <strong>${accuracy}%</strong></p>
-      <p>📝 Preguntas respondidas: <strong>${log.length}/${quiz.length}</strong></p>
-      <button onclick="downloadLog()">📥 Descargar Registro</button>
-      <button onclick="location.reload()">🔄 Jugar de Nuevo</button>
+      <h2>🏁 ¡JUEGO COMPLETADO! 🏁</h2>
+      
+      <div class="result-stats">
+        <div class="stat-card">
+          <div class="stat-value">${score}</div>
+          <div class="stat-label">PUNTOS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${accuracy}%</div>
+          <div class="stat-label">PRECISIÓN</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${correctCount}/${log.length}</div>
+          <div class="stat-label">RESPUESTAS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">${lives}</div>
+          <div class="stat-label">VIDAS REST.</div>
+        </div>
+      </div>
+      
+      <p style="font-size: 18px; margin-top: 20px;">👤 <strong>${player}</strong></p>
+      <p style="font-size: 14px; color: rgba(236, 240, 241, 0.7);">${new Date().toLocaleString('es-ES')}</p>
+      
+      <div>
+        <button onclick="downloadLog()">📥 Descargar Registro</button>
+        <button onclick="location.reload()">🔄 Jugar de Nuevo</button>
+      </div>
     </div>
     
     <div class="ranking">
-      <h3>🏆 TOP 10 JUGADORES 🏆</h3>
-      ${rankings.map((r, i) => `
+      <h3>🏆 TOP 10 MEJORES JUGADORES 🏆</h3>
+      ${rankings.length > 0 ? rankings.map((r, i) => `
         <div class="ranking-item">
-          <strong>#${i + 1}</strong> - ${r.player}: <span style="color:#00ff00;">${r.score}pts</span> (${r.date})
+          <div>
+            <span class="ranking-position">#${i + 1}</span>
+            <strong style="margin-left: 10px;">${r.player}</strong>
+          </div>
+          <div style="text-align: right;">
+            <span class="ranking-score">${r.score}pts</span>
+            <span style="color: rgba(236, 240, 241, 0.5); margin-left: 15px; font-size: 12px;">${r.date}</span>
+          </div>
         </div>
-      `).join('')}
+      `).join('') : '<p>No hay registros aún. ¡Sé el primero!</p>'}
     </div>
   `;
   
   document.getElementById("resultContainer").innerHTML = html;
   document.getElementById("hud").style.display = "none";
   document.getElementById("question").innerText = "";
-  document.getElementById("leaves").innerHTML = '<div id="frog" class="game-over">🐸</div>';
+  document.getElementById("leaves").innerHTML = '<div id="frog">🐸</div>';
 }
 
 function downloadLog() {
-  let text = `REGISTRO DE JUEGO - ${player}\n`;
+  let text = `╔════════════════════════════════════════╗\n`;
+  text += `║      REGISTRO DE JUEGO - FROG QUIZ      ║\n`;
+  text += `╚════════════════════════════════════════╝\n\n`;
+  text += `Jugador: ${player}\n`;
   text += `Puntos: ${score}\n`;
   text += `Vidas Restantes: ${lives}\n`;
-  text += `Fecha: ${new Date().toLocaleString()}\n\n`;
-  text += `PREGUNTAS Y RESPUESTAS:\n`;
-  text += `${'='.repeat(60)}\n\n`;
+  text += `Fecha: ${new Date().toLocaleString('es-ES')}\n`;
+  text += `${'═'.repeat(50)}\n\n`;
+  text += `PREGUNTAS Y RESPUESTAS:\n\n`;
   
   log.forEach((l, i) => {
     text += `${i + 1}. ${l.q}\n`;
-    text += `   Tu respuesta: ${l.user} ${l.result ? '✓' : '✗'}\n`;
-    text += `   Respuesta correcta: ${l.correct}\n\n`;
+    text += `   Tu respuesta: ${l.user} ${l.result ? '✓ CORRECTO' : '✗ INCORRECTO'}\n`;
+    if (!l.result) {
+      text += `   Respuesta correcta: ${l.correct}\n`;
+    }
+    text += `\n`;
   });
   
   let blob = new Blob([text], { type: "text/plain;charset=utf-8" });
