@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 Mente Tranquila - Test de Psicoterapia Arcade</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap');
+
+:root {
+  --primary: #2ecc71;
+  --secondary: #3498db;
+  --accent: #e74c3c;
+  --dark: #1a1a2e;
+  --light: #ecf0f1;
+  --glow: 0 0 20px rgba(46, 204, 113, 0.6);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-attachment: fixed;
+  color: var(--light);
+  text-align: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.quiz {
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border: 3px solid var(--primary);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), var(--glow);
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: 48px;
+  margin-bottom: 10px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: rgba(236, 240, 241, 0.7);
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+.setup {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+}
+
+.setup input, .setup select {
+  padding: 15px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  background: rgba(46, 204, 113, 0.1);
+  border: 2px solid var(--primary);
+  color: var(--light);
+  border-radius: 10px;
+}
+
+.setup button {
+  padding: 16px;
+  font-size: 16px;
+  font-family: 'Orbitron', monospace;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary), #27ae60);
+  color: var(--dark);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.setup button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(46, 204, 113, 0.6);
+}
+
+#hud {
+  display: none;
+  justify-content: space-around;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.hud-item {
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(52, 152, 219, 0.15));
+  border: 2px solid var(--primary);
+  padding: 18px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  min-width: 160px;
+}
+
+.hud-item span {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 20px;
+}
+
+#question {
+  font-size: 22px;
+  margin: 40px 0;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+  border: 2px solid rgba(46, 204, 113, 0.5);
+  padding: 30px;
+  border-radius: 15px;
+}
+
+.leaves {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 80px 0 60px 0;
+  position: relative;
+  flex-wrap: wrap;
+  min-height: 200px;
+}
+
+.leaf {
+  width: 160px;
+  height: 160px;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+  font-size: 14px;
+  text-align: center;
+  padding: 15px;
+}
+
+.leaf.disabled {
+  pointer-events: none;
+}
+
+.leaf:hover {
+  transform: scale(1.12) translateY(-8px);
+}
+
+#frog {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 100px;
+  transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 25px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  margin: 30px 0;
+  overflow: hidden;
+  display: none;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.5s;
+}
+
+.combo-badge {
+  position: absolute;
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  color: #f1c40f;
+  text-shadow: 0 0 10px #f39c12;
+  animation: floatUp 1s forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-50px); }
+}
+
+.result {
+  margin-top: 40px;
+  padding: 40px;
+  background: rgba(46, 204, 113, 0.15);
+  border: 2px solid var(--primary);
+  border-radius: 15px;
+}
+
+.result button {
+  margin-top: 12px;
+  margin-right: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(45deg, var(--primary), #27ae60);
+  color: var(--dark);
+  border: none;
+  font-family: 'Orbitron', monospace;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.ranking {
+  margin-top: 40px;
+  background: rgba(52, 152, 219, 0.15);
+  border: 2px solid var(--secondary);
+  padding: 30px;
+  border-radius: 15px;
+}
+
+.ranking-item {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  margin: 10px 0;
+  border-left: 4px solid var(--primary);
+  display: flex;
+  justify-content: space-between;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="quiz">
+    <h1>🧠 MENTE TRANQUILA</h1>
+    <p class="subtitle">Test interactivo de psicoterapia - Aprende jugando</p>
+    
+    <div class="setup" id="setup">
+      <div class="form-group">
+        <label>👤 Tu nombre</label>
+        <input id="playerName" placeholder="Ingresa tu nombre..." type="text">
+      </div>
+      
+      <div class="form-group">
+        <label>⚙️ Dificultad</label>
+        <select id="difficulty">
+          <option value="easy">⭐ Fácil - 12 segundos, 5 vidas</option>
+          <option value="medium" selected>⭐⭐ Medio - 8 segundos, 3 vidas</option>
+          <option value="hard">⭐⭐⭐ Difícil - 5 segundos, 2 vidas</option>
+        </select>
+      </div>
+      
+      <button onclick="startGame()">▶️ COMENZAR JUEGO</button>
+    </div>
+
+    <div id="hud">
+      <div class="hud-item">⏳ <span id="time">10</span>s</div>
+      <div class="hud-item">⭐ <span id="points">0</span>pts</div>
+      <div class="hud-item">❤️ <span id="lives">3</span></div>
+      <div class="hud-item">🔥 Racha: <span id="combo">0</span>x</div>
+      <div class="hud-item">📊 <span id="current">1</span>/<span id="total">7</span></div>
+    </div>
+
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div id="question"></div>
+
+    <div class="leaves" id="leaves">
+      <div id="frog">🐸</div>
+    </div>
+
+    <div id="resultContainer"></div>
+  </div>
+</div>
+
+<script>
+const pool = [
+  {q:"La psicoterapia ayuda solo en crisis graves", options:["Verdadero","Falso"], a:1},
+  {q:"El terapeuta mantiene confidencialidad", options:["Verdadero","Falso"], a:0},
+  {q:"La TCC trabaja pensamientos y conductas", options:["Verdadero","Falso"], a:0},
+  {q:"Ir a terapia es debilidad", options:["Verdadero","Falso"], a:1},
+  {q:"La alianza terapéutica influye en el éxito", options:["Verdadero","Falso"], a:0},
+  {q:"El terapeuta juzga libremente al paciente", options:["Verdadero","Falso"], a:1},
+  {q:"Existen varios enfoques terapéuticos", options:["Verdadero","Falso"], a:0},
+  {q:"La terapia puede mejorar habilidades sociales", options:["Verdadero","Falso"], a:0},
+  {q:"La psicoterapia es solo hablar sin objetivos", options:["Verdadero","Falso"], a:1},
+  {q:"La terapia puede reducir ansiedad", options:["Verdadero","Falso"], a:0},
+  {q:"La empatía es fundamental en terapia", options:["Verdadero","Falso"], a:0},
+  {q:"El psicólogo prescribe medicamentos", options:["Verdadero","Falso"], a:1},
+  {q:"La terapia familiar incluye a todos los miembros", options:["Verdadero","Falso"], a:0},
+  {q:"La resistencia del paciente es mala señal", options:["Verdadero","Falso"], a:1},
+  {q:"La psicoterapia tiene base científica", options:["Verdadero","Falso"], a:0},
+];
+
+let quiz = [], current = 0, score = 0, lives = 3, log = [];
+let time = 10, timer = null, player = "";
+let gameActive = false;
+let rankings = [];
+let currentDifficulty = "medium";
+let combo = 0;
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+function playSound(freq, duration) {
+  try {
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch(e) {}
+}
+
+function startGame() {
+  initAudio();
+  player = document.getElementById("playerName").value || "Jugador Anónimo";
+  currentDifficulty = document.getElementById("difficulty").value;
+  
+  if (currentDifficulty === "easy") { time = 12; lives = 5; }
+  if (currentDifficulty === "medium") { time = 8; lives = 3; }
+  if (currentDifficulty === "hard") { time = 5; lives = 2; }
+  
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("hud").style.display = "flex";
+  document.getElementById("progressBar").style.display = "block";
+  document.getElementById("resultContainer").innerHTML = "";
+  
+  quiz = [...pool].sort(() => Math.random() - 0.5).slice(0, 7);
+  document.getElementById("total").innerText = quiz.length;
+  
+  current = 0;
+  score = 0;
+  combo = 0;
+  log = [];
+  gameActive = true;
+  
+  document.getElementById("points").innerText = score;
+  document.getElementById("lives").innerText = lives;
+  document.getElementById("combo").innerText = combo;
+  
+  load();
+}
+
+function startTimer() {
+  let t = time;
+  document.getElementById("time").innerText = t;
+  if (timer) clearInterval(timer);
+  
+  timer = setInterval(() => {
+    t--;
+    document.getElementById("time").innerText = t;
+    
+    if (t <= 0) {
+      clearInterval(timer);
+      if (gameActive) {
+        combo = 0;
+        document.getElementById("combo").innerText = combo;
+        loseLife("⏰ Sin responder");
+        next();
+      }
+    }
+  }, 1000);
+}
+
+function load() {
+  if (!gameActive || lives <= 0) {
+    return finish();
+  }
+  
+  let q = quiz[current];
+  document.getElementById("question").innerText = q.q;
+  document.getElementById("current").innerText = current + 1;
+  
+  let progress = ((current + 1) / quiz.length) * 100;
+  document.getElementById("progressFill").style.width = progress + "%";
+  
+  let container = document.getElementById("leaves");
+  container.innerHTML = '<div id="frog">🐸</div>';
+  
+  let shuffled = q.options.map((opt, i) => ({ opt, i })).sort(() => Math.random() - 0.5);
+  
+  shuffled.forEach(item => {
+    let leaf = document.createElement("div");
+    leaf.className = "leaf";
+    leaf.innerText = item.opt;
+    leaf.onclick = () => answer(item.i, leaf);
+    container.appendChild(leaf);
+  });
+  
+  startTimer();
+}
+
+function answer(i, leaf) {
+  if (!gameActive) return;
+  
+  clearInterval(timer);
+  gameActive = false;
+  
+  document.querySelectorAll('.leaf').forEach(l => l.classList.add('disabled'));
+  
+  let frog = document.getElementById("frog");
+  let rect = leaf.getBoundingClientRect();
+  let parentRect = leaf.parentElement.getBoundingClientRect();
+  let x = rect.left - parentRect.left + rect.width / 2;
+  let y = rect.top - parentRect.top;
+  
+  frog.style.left = x + "px";
+  frog.style.top = (y - 90) + "px";
+  
+  const isCorrect = i === quiz[current].a;
+  const userAnswer = quiz[current].options[i];
+  const correctAnswer = quiz[current].options[quiz[current].a];
+  
+  log.push({ q: quiz[current].q, user: userAnswer, correct: correctAnswer, result: isCorrect });
+  
+  if (isCorrect) {
+    combo++;
+    let addedPoints = 10 * combo;
+    score += addedPoints;
+    leaf.style.background = "linear-gradient(135deg, #27ae60, #1e8449)";
+    playSound(523.25 + (combo * 50), 0.3);
+    
+    if (combo > 1) {
+      showComboBadge(leaf, `¡${combo}x COMBO! +${addedPoints}`);
+    }
+  } else {
+    combo = 0;
+    loseLife(userAnswer);
+    leaf.style.background = "linear-gradient(135deg, #e74c3c, #c0392b)";
+    playSound(220, 0.3);
+  }
+  
+  document.getElementById("points").innerText = score;
+  document.getElementById("lives").innerText = lives;
+  document.getElementById("combo").innerText = combo;
+  
+  setTimeout(next, 900);
+}
+
+function showComboBadge(target, text) {
+  let badge = document.createElement("div");
+  badge.className = "combo-badge";
+  badge.innerText = text;
+  badge.style.left = target.offsetLeft + "px";
+  badge.style.top = target.offsetTop - 20 + "px";
+  document.getElementById("leaves").appendChild(badge);
+}
+
+function loseLife(userAnswer) {
+  lives--;
+  if (lives < 0) lives = 0;
+}
+
+function next() {
+  current++;
+  if (current < quiz.length && lives > 0) {
+    gameActive = true;
+    load();
+  } else {
+    finish();
+  }
+}
+
+function finish() {
+  gameActive = false;
+  if (timer) clearInterval(timer);
+  
+  playSound(262, 0.5);
+  
+  let accuracy = log.length > 0 ? Math.round((log.filter(l => l.result).length / log.length) * 100) : 0;
+  let correctCount = log.filter(l => l.result).length;
+  
+  let html = `
+    <div class="result">
+      <h2>🏁 ¡JUEGO COMPLETADO! 🏁</h2>
+      <p style="font-size: 20px;">Puntos finales: <strong>${score}</strong></p>
+      <p>Precisión: ${accuracy}% (${correctCount}/${log.length})</p>
+      <p>Jugador: <strong>${player}</strong></p>
+      <br>
+      <button onclick="location.reload()">🔄 Jugar de Nuevo</button>
+    </div>
+  `;
+  
+  document.getElementById("resultContainer").innerHTML = html;
+  document.getElementById("hud").style.display = "none";
+  document.getElementById("question").innerText = "";
+  document.getElementById("leaves").innerHTML = '<div id="frog">🐸</div>';
+}
+</script>
+</body>
+</html>
